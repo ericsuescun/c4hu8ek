@@ -26,7 +26,7 @@ class Api::V1::PinsController < ApplicationController
         # if (user == nil) || (user.api_token != request.headers["HTTP_X_USER_TOKEN"])
         #     json_response({:message=>"Error with your credentials"}, 401)
         # end
-        if (user == nil || user.api_token != request.headers["HTTP_X_USER_TOKEN"])
+        if (user == nil || user.api_token != request.headers["HTTP_X_API_TOKEN"])
                      head 401
                 end
       end
