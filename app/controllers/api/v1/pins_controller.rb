@@ -23,9 +23,12 @@ class Api::V1::PinsController < ApplicationController
 
       def authorize_request
         user = User.find_by_email(request.headers["HTTP_X_USER_EMAIL"])
-        if (user == nil) || (user.api_token != request.headers["HTTP_X_USER_TOKEN"])
-            json_response({:message=>"Error with your credentials"}, 401)
-        end
+        # if (user == nil) || (user.api_token != request.headers["HTTP_X_USER_TOKEN"])
+        #     json_response({:message=>"Error with your credentials"}, 401)
+        # end
+        if (user == nil || user.api_token != request.headers["HTTP_X_USER_TOKEN"])
+                     head 401
+                end
       end
 end
 
