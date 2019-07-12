@@ -1,6 +1,6 @@
 class Api::V1::PinsController < ApplicationController
 
-  before_action :restrict_access
+  # before_action :restrict_access
 
   def index
     render json: Pin.all.order('created_at DESC'), status: :ok
@@ -18,18 +18,6 @@ class Api::V1::PinsController < ApplicationController
   private
     def pin_params
       params.require(:pin).permit(:title, :image_url)
-    end
-
-    def restrict_access
-      # render :json=> {:message=>"Email: #{request.headers["HTTP_X_USER_EMAIL"]}, token: #{request.headers["HTTP_X_USER_TOKEN"]}"}, :status=>:ok
-      # render :json=> {:message=>"Headers #{request.headers["SERVER_PORT"]}"}, :status=>:ok
-      # user1 = User.find(1)
-      user1 = User.find_by_email(request.headers["HTTP_X_USER_EMAIL"])
-      user2 = User.find_by_api_token(request.headers["HTTP_X_USER_TOKEN"])
-      # user2 = User.find(1)
-      if  user1 != user2
-        render :json=> {:message=>"Error with your credentials"}, :status=>401
-      end
     end
 end
 
