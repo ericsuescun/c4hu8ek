@@ -22,15 +22,17 @@ class Api::V1::PinsController < ApplicationController
     end
 
       def authorize_request
-        user1 ||= User.find_by_email(request.headers["HTTP_X_USER_EMAIL"])
-        raise(ActiveRecord::RecordNotFound) if user1 == nil
-
-        user2 ||= User.find_by_api_token(request.headers["HTTP_X_USER_TOKEN"])
-        raise(ActiveRecord::RecordNotFound) if user2 == nil
-
-        if (user1 != user2)
-          json_response({:message=>"Error with your credentials: User1 = #{user1.to_json}, User2 = #{user2.to_json}"}, 401)
+        user = User.find_by_email(request.headers["HTTP_X_USER_EMAIL"])
+        if (user == nil) || (user.api_token != request.headers["HTTP_X_USER_TOKEN"])
+            json_response({:message=>"Error with your credentials"}, 401)
         end
+
+        # user2 ||= User.find_by_api_token(request.headers["HTTP_X_USER_TOKEN"])
+        # raise(ActiveRecord::RecordNotFound) if user2 == nil
+
+        # if (user1 != user2)
+        #   json_response({:message=>"Error with your credentials: User1 = #{user1.to_json}, User2 = #{user2.to_json}"}, 401)
+        # end
       end
 end
 
